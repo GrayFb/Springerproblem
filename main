@@ -1,11 +1,11 @@
 # Datei:    springer.py
-# Version:  1.0
-# Datum:    25.02.2018
+# Version:  1.1
+# Datum:    27.02.2018
 # Autor:    Jules
 
 
-def bedroht(derSpringer, besetzteFelder):
-    #dderSpringer: (zeile,spalte)
+def bedroht(n,derSpringer, besetzteFelder):
+    #derSpringer: (zeile,spalte)
     #besetzteFelder:[(zeile,spalte),(zeile,spalte)...]
     
     if besetzteFelder==[]:
@@ -15,85 +15,80 @@ def bedroht(derSpringer, besetzteFelder):
         if derSpringer==feld:
             return 1
 
-    #for dame in gesetzteDamen:
-     #   if abs(dieDame[0]-dame[0])==abs(dieDame[1]-dame[1]):
-      #      return 1
+    for feld in besetzteFelder:
+        if derSpringer[0] < 0 or derSpringer[0] > n :
+            return 1
+        if derSpringer [1] < 0 or derSpringer [1] > n :
+            return 1
 
     return 0
 
 
 def loese(n, eineLoesung, aktPos):
-    zeile=aktPos[0]
-    spalte=aktPos[1]
     
     while len(eineLoesung)!= n*n:
         futurePos=(aktPos[0]-2,aktPos[1]+1)
 
-        if bedroht (futurePos,eineLoesung) is 1:
+        if bedroht (n, futurePos,eineLoesung) is 1:
             futurePos=(aktPos[0]-1,aktPos[1]+2)
-
-            if bedroht (futurePos, eineLoesung) is 1:
+            
+            if bedroht (n, futurePos, eineLoesung) is 1:
                 futurePos=(aktPos[0]+1,aktPos[1]+2)
 
-                if bedroht (futurePos, eineLoesung) is 1:
+                if bedroht (n, futurePos, eineLoesung) is 1:
                     futurePos=(aktPos[0]+2,aktPos[1]+1)
 
-                    if bedroht (futurePos, eineLoesung) is 1:
+                    if bedroht (n, futurePos, eineLoesung) is 1:
                         futurePos=(aktPos[0]+2,aktPos[1]-1)
 
-                        if bedroht (futurePos, eineLoesung) is 1:
+                        if bedroht (n, futurePos, eineLoesung) is 1:
                             futurePos=(aktPos[0]+1,aktPos[1]-2)
 
-                            if bedroht (futurePos, eineLoesung) is 1:
+                            if bedroht (n, futurePos, eineLoesung) is 1:
                                 futurePos=(aktPos[0]-1,aktPos[1]-2)
 
-                                if bedroht (futurePos, eineLoesung) is 1:
+                                if bedroht (n, futurePos, eineLoesung) is 1:
                                     futurePos=(aktPos[0]-2,aktPos[1]-1)
 
-                                    if bedroht (futurePos, eineLoesung) is 1:
-                                        pass
+                                    if bedroht (n, futurePos, eineLoesung) is 1:
+                                        loese(n, 
                                     else:
                                         eineLoesung.append(futurePos)
-                                        loese()
+                                        loese(n, eineLoesung, futurePos)
                                 else:
                                     eineLoesung.append(futurePos)
-                                    loese()
+                                    loese(n, eineLoesung, futurePos)
                             else:
                                 eineLoesung.append(futurePos)
-                                loese()
+                                loese(n, eineLoesung, futurePos)
                         else:
                             eineLoesung.append(futurePos)
-                            loese()
+                            loese(n, eineLoesung, futurePos)
                     else:
                         eineLoesung.append(futurePos)
-                        loese()
+                        loese(n, eineLoesung, futurePos)
                 else:
                     eineLoesung.append(futurePos)
-                    loese()
+                    loese(n, eineLoesung, futurePos)
             else:
                 eineLoesung.append(futurePos)
-                loese()
+                loese(n, eineLoesung, futurePos)
         else:
             eineLoesung.append(futurePos)
-            loese()
+            loese(n, eineLoesung, futurePos)
                
         
-        if len(eineLoesung) is n*n:
-            print eineLoesung
-        else:
-           loese(n, eineLoesung)
+    if len(eineLoesung) is n*n:
+        print eineLoesung
+    else:
+        loese(n, eineLoesung, aktPos)
         
-            
-
-    #if not gesetzt:
-     #   neue_spalte=eineLoesung[len(eineLoesung)-1][1]+1
-      #  eineLoesung=eineLoesung[0:len(eineLoesung)-1]
-       # loese(n, eienLoesung ,neue_spalte)
 
 
-def nSpringer(n, ersterSpringer=(0,5)):
+def nSpringer(n, ersterSpringer=(0,0)):
     lsg=[ersterSpringer]
-    loese(n,lsg,(0,5))
+    loese(n,lsg,(0,0))
 
 
-nSpringer(8)    
+nSpringer(5)    
+  
