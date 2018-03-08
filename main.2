@@ -1,0 +1,153 @@
+# Datei:    springer.py
+# Version:  1.0
+# Datum:    25.02.2018
+# Autor:    Jules
+
+
+def bedroht(n,derSpringer, besetzteFelder):
+    #derSpringer: (zeile,spalte)
+    #besetzteFelder:[(zeile,spalte),(zeile,spalte)...]
+    
+    if besetzteFelder==[]:
+        return 0
+    
+    for feld in besetzteFelder:
+        if derSpringer == feld:
+            return 1
+
+    for feld in besetzteFelder:
+        if derSpringer[0] < 0 or derSpringer[0] > n-1 :
+            return 1
+        if derSpringer [1] < 0 or derSpringer [1] > n-1 :
+            return 1
+
+    return 0
+
+
+def loese(n, eineLoesung, lastPos, aktPos, zahl, zahlen):
+    lenzahl = len(zahlen)
+    laenge = len(eineLoesung)
+    print lastPos, aktPos, zahlen
+    while len(eineLoesung)!= n*n:
+        futurePos=(aktPos[0]-2,aktPos[1]+1)
+
+        if bedroht (n, futurePos,eineLoesung) is 1 :
+            if zahl == 0:
+                futurePos=(aktPos[0]-1,aktPos[1]+2)
+                zahl+=1
+
+            if bedroht (n, futurePos, eineLoesung) is 1 :
+                if zahl == 1:
+                    futurePos=(aktPos[0]+1,aktPos[1]+2)
+                    zahl+=1
+
+                if bedroht (n, futurePos, eineLoesung) is 1 :
+                    if zahl == 2:
+                        futurePos=(aktPos[0]+2,aktPos[1]+1)
+                        zahl+=1
+
+                    if bedroht (n, futurePos, eineLoesung) is 1 :
+                        if zahl == 3:
+                            futurePos=(aktPos[0]+2,aktPos[1]-1)
+                            zahl+=1
+
+                        if bedroht (n, futurePos, eineLoesung) is 1 :
+                            if zahl == 4:
+                                futurePos=(aktPos[0]+1,aktPos[1]-2)
+                                zahl+=1
+
+                            if bedroht (n, futurePos, eineLoesung) is 1 :
+                                if zahl == 5:
+                                    futurePos=(aktPos[0]-1,aktPos[1]-2)
+                                    zahl+=1
+
+                                if bedroht (n, futurePos, eineLoesung) is 1 :
+                                    if zahl == 6:
+                                        futurePos=(aktPos[0]-2,aktPos[1]-1)
+                                        zahl+=1
+
+                                    if bedroht (n, futurePos, eineLoesung) is 1 :
+                                
+                                        if lastPos == eineLoesung[0]:
+                                            eineLoesung.pop()
+                                            zahlen.pop()
+                                            zahl = zahlen[lenzahl-3]
+                                            zahl+=1
+                                            if zahl == 7 :
+                                                break
+                                            aktPos=eineLoesung[0]
+                                            lastPos=eineLoesung[0]
+                                            futurePos=(aktPos[0]+1,aktPos[1])
+
+                                            loese(n, eineLoesung, lastPos, futurePos, zahl, zahlen )
+                                        else:
+                                            eineLoesung.pop()
+                                            zahlen.pop()
+                                            laenge=len(eineLoesung)
+                                            lenzahl=len(zahlen)
+                                            
+                                            #aktPos = lastPos
+                                            aktPos =  eineLoesung[laenge-3]
+                                            lastPos = eineLoesung[laenge-4]
+                                            zahl = zahlen[lenzahl-1]
+                                            zahl+=1
+                                           
+                                            if zahl  == 7 :
+                                               
+                                                loese(n, eineLoesung, lastPos, aktPos, 1, zahlen)
+                                        
+                                            else:
+                                               
+                                                aktPos =  eineLoesung[laenge-1]
+                                                lastPos = eineLoesung[laenge-2]
+                                                
+                                                loese(n, eineLoesung, lastPos, aktPos, zahl, zahlen)
+                                                
+                                    else:
+                                        eineLoesung.append(futurePos)
+                                        zahlen.append(zahl)
+                                        loese(n, eineLoesung, aktPos, futurePos, 0, zahlen)
+                                else:
+                                    eineLoesung.append(futurePos)
+                                    zahlen.append(zahl)
+                                    loese(n, eineLoesung, aktPos, futurePos, 0, zahlen )
+                            else:
+                                eineLoesung.append(futurePos)
+                                zahlen.append(zahl)
+                                loese(n, eineLoesung, aktPos, futurePos, 0, zahlen)
+                        else:
+                            eineLoesung.append(futurePos)
+                            zahlen.append(zahl)
+                            loese(n, eineLoesung, aktPos, futurePos, 0, zahlen)
+                    else:
+                        eineLoesung.append(futurePos)
+                        zahlen.append(zahl)
+                        loese(n, eineLoesung, aktPos, futurePos, 0, zahlen)
+                else:
+                    eineLoesung.append(futurePos)
+                    zahlen.append(zahl)
+                    loese(n, eineLoesung, aktPos, futurePos, 0, zahlen)
+            else:
+                eineLoesung.append(futurePos)
+                zahlen.append(zahl)
+                loese(n, eineLoesung, aktPos, futurePos, 0, zahlen)
+        else:
+            eineLoesung.append(futurePos)
+            zahlen.append(zahl)
+            loese(n, eineLoesung, aktPos, futurePos, 0, zahlen)
+               
+        
+    if len(eineLoesung) is n*n:
+        print eineLoesung
+    else:
+        loese(n, eineLoesung, lastPos, aktPos, 0, zahlen)
+        
+
+
+def nSpringer(n, ersterSpringer=(0,0)):
+    lsg=[ersterSpringer]
+    zahlen=[0]
+    loese(n,lsg,(0,0), (0,0), 0, zahlen)
+
+
+nSpringer(5)    
